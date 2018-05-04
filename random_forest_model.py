@@ -3,7 +3,7 @@
 
 # # 随机森林分类
 
-# In[9]:
+# In[1]:
 
 
 import numpy as np
@@ -51,7 +51,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 # ## 建立并训练模型
 # 此处使用的是随机森林分类器的默认设置. 如果运算过程太长, 或者评估不理想, 也可以考虑调整其中的参数
 
-# In[5]:
+# In[4]:
 
 
 clf = RandomForestClassifier()
@@ -60,7 +60,7 @@ clf.fit(X_train, y_train)
 
 # ## 评估模型
 
-# In[7]:
+# In[5]:
 
 
 y_pred=clf.predict_proba(X_test)[:, 1]
@@ -70,7 +70,7 @@ print("AUC=",auc(fpr_rf, tpr_rf))
 
 # ## ROC曲线
 
-# In[8]:
+# In[6]:
 
 
 plt.figure(1)
