@@ -4,6 +4,18 @@
 # # 读取WAM5500数据文件
 # 
 
+# 一组调节测试仪器WAM5500的数据文件, 例如:  
+# 
+# |分类|数据文件名|
+# |:--|:--|
+# |有病|001.csv|
+# |有病|002.csv|
+# |没病|003.csv|
+# |有病|004.csv|
+# 
+# 说明文件存储在class_fname所指定的文件中. 
+# 
+
 # In[1]:
 
 
@@ -12,17 +24,17 @@ import os
 import numpy as np
 
 
-# 指定文件路径
-
 # In[2]:
 
 
-fpath="data5500"
-fname="WCSD0006.csv"
-data_filename=os.path.join(fpath,fname)
+if __name__=="__main__":
+    fpath="data5500"
+    class_fname="class.csv"
 
 
-# In[129]:
+# ## 读取单个文件
+
+# In[3]:
 
 
 def read_raw_data(filename):
@@ -45,12 +57,23 @@ def read_raw_data(filename):
     raw_data.dropna(inplace=True)
     return raw_data
 
+
+# ## 按照时间裁剪
+# 测量的时间通常比所需要的时间长, 因此需要按照裁剪出指定时长的数据. 
+# 由于有可能存在数据点丢失, 所以指定时长的数据可能数量并不相等, 需要补齐. 
+
+# In[4]:
+
+
 def cut_by_time(df,start_time=0, duration=5):
     # 获取一段时间内的数据
     # 测量时间通常长于所需要的时间, 因此需要截取
     start_timestamp=pd.to_datetime(start_time,unit='s')
     end_timestamp=pd.to_datetime(start_time+duration,unit="s")
     df= df.where((df.time>=start_timestamp) & (df.time<=end_timestamp)).dropna()
+    
+    #将时间格式转换回float
+    df.time=pd.to_numeric(df.time)/10e8
     return df
 
 def padding_time(df,duration=5,redundancy=5,padding_with="last"):
@@ -68,11 +91,31 @@ def padding_time(df,duration=5,redundancy=5,padding_with="last"):
     return new_df
 
 
-# In[133]:
+
+# ## 读取数据文件的整合
+# 按照文件名读取数据, 然后按照时间范围截取, 清理
+
+# In[5]:
+
+
+def get_data(filename,start_time=0,duration=5,redundancy=5,padding_with="last"):
+    # 按照文件名读取数据
+    # 依次进行数据清理
+    # 返回Numpy array
+    data_filename=os.path.join(fpath,filename)
+    df=read_raw_data(data_filename)
+    df=cut_by_time(df,start_time=start_time, duration=duration)
+    df=padding_time(df,duration=duration,redundancy=redundancy,padding_with=padding_with)
+    return df.values.reshape(1,-1)
+
+
+# In[6]:
 
 
 # 测试
 if __name__=="__main__":
+    fname="WCSD0006.csv"
+    data_filename=os.path.join(fpath,fname)
     raw_data=read_raw_data(data_filename)
     raw_data=cut_by_time(raw_data)
     raw_data=padding_time(raw_data)
@@ -82,18 +125,30 @@ if __name__=="__main__":
 
 # # 读取分类文件
 # 
-# 分类文件是一个excel文件, 记录了分类和文件名
+# 分类文件是一个csv文件, 记录了每一个数据文件的分类和文件名
 
-# In[5]:
-
-
-class_fname="class.xlsx"
-class_filename=os.path.join(fpath,class_fname)
+# In[7]:
 
 
-# In[6]:
+def get_5500_data(fpath,class_fname,start_time=0,duration=5,redundancy=5,padding_with="last"):
+    class_filename=os.path.join(fpath,class_fname)
+    class_data=pd.read_csv(class_filename)
+    X=np.vstack([get_data(data["filename"],
+                          start_time=start_time,
+                          duration=duration,
+                          redundancy=redundancy,
+                          padding_with=padding_with) 
+                 for idx,data in class_data.iterrows()])
+    y=class_data["class"].values.reshape(-1,1)
+    return X,y
 
 
-class_data=pd.read_excel(class_filename)
-class_data.head()
+# In[8]:
+
+
+# 测试
+if __name__=="__main__":
+    X,y=get_5500_data(fpath,class_fname)
+    print(X)
+    print(y)
 

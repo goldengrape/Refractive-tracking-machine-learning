@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head><meta charset="utf-8" />
-<title>read_5500_data</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>random_forest_model</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 
 <style type="text/css">
@@ -11775,68 +11775,17 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="&#35835;&#21462;WAM5500&#25968;&#25454;&#25991;&#20214;">&#35835;&#21462;WAM5500&#25968;&#25454;&#25991;&#20214;<a class="anchor-link" href="#&#35835;&#21462;WAM5500&#25968;&#25454;&#25991;&#20214;">&#182;</a></h1>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>一组调节测试仪器WAM5500的数据文件, 例如:</p>
-<table>
-<thead><tr>
-<th style="text-align:left">分类</th>
-<th style="text-align:left">数据文件名</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">有病</td>
-<td style="text-align:left">001.csv</td>
-</tr>
-<tr>
-<td style="text-align:left">有病</td>
-<td style="text-align:left">002.csv</td>
-</tr>
-<tr>
-<td style="text-align:left">没病</td>
-<td style="text-align:left">003.csv</td>
-</tr>
-<tr>
-<td style="text-align:left">有病</td>
-<td style="text-align:left">004.csv</td>
-</tr>
-</tbody>
-</table>
-<p>说明文件存储在class_fname所指定的文件中.</p>
-
+<h1 id="&#38543;&#26426;&#26862;&#26519;&#20998;&#31867;">&#38543;&#26426;&#26862;&#26519;&#20998;&#31867;<a class="anchor-link" href="#&#38543;&#26426;&#26862;&#26519;&#20998;&#31867;">&#182;</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="vm">__name__</span><span class="o">==</span><span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-    <span class="n">fpath</span><span class="o">=</span><span class="s2">&quot;data5500&quot;</span>
-    <span class="n">class_fname</span><span class="o">=</span><span class="s2">&quot;class.csv&quot;</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 </pre></div>
 
 </div>
@@ -11848,268 +11797,9 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="&#35835;&#21462;&#21333;&#20010;&#25991;&#20214;">&#35835;&#21462;&#21333;&#20010;&#25991;&#20214;<a class="anchor-link" href="#&#35835;&#21462;&#21333;&#20010;&#25991;&#20214;">&#182;</a></h2>
+<h2 id="&#35835;&#21462;&#25968;&#25454;">&#35835;&#21462;&#25968;&#25454;<a class="anchor-link" href="#&#35835;&#21462;&#25968;&#25454;">&#182;</a></h2>
 </div>
 </div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">read_raw_data</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-    <span class="c1"># csv文件中, 首行数据记录了机器型号, , 测量日期, 测量起始时间, 此信息略去未读取</span>
-    <span class="c1"># 原始数据从下一行开始</span>
-    <span class="n">raw_data</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">skiprows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">index_col</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="c1"># 数据列分别表示记录时间, 记录眼别, 视标位置, 屈光, 瞳孔直径</span>
-    <span class="n">raw_data</span><span class="o">.</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">,</span><span class="s2">&quot;eye&quot;</span><span class="p">,</span><span class="s2">&quot;target&quot;</span><span class="p">,</span><span class="s2">&quot;power&quot;</span><span class="p">,</span><span class="s2">&quot;pupil&quot;</span><span class="p">]</span>
-    <span class="c1"># 其中眼别和视标位置看起来对学习不重要, 故略去</span>
-    <span class="n">raw_data</span><span class="o">=</span><span class="n">raw_data</span><span class="p">[[</span><span class="s2">&quot;time&quot;</span><span class="p">,</span><span class="s2">&quot;power&quot;</span><span class="p">,</span><span class="s2">&quot;pupil&quot;</span><span class="p">]]</span>
-    
-    <span class="c1"># 测量时间使用pandas datetime格式记录, 容易使用时间间隔进行数据提取, 日期不重要</span>
-    <span class="n">raw_data</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">raw_data</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">],</span><span class="n">unit</span><span class="o">=</span><span class="s1">&#39;s&#39;</span><span class="p">)</span>
-    
-    <span class="c1"># 其他数据以float方式记录, 空缺数据记录为NaN</span>
-    <span class="n">raw_data</span><span class="p">[</span><span class="s2">&quot;power&quot;</span><span class="p">]</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">raw_data</span><span class="p">[</span><span class="s2">&quot;power&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
-    <span class="n">raw_data</span><span class="p">[</span><span class="s2">&quot;pupil&quot;</span><span class="p">]</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">raw_data</span><span class="p">[</span><span class="s2">&quot;pupil&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
-    
-    <span class="c1"># 丢弃空缺数据所在行</span>
-    <span class="n">raw_data</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">raw_data</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="&#25353;&#29031;&#26102;&#38388;&#35009;&#21098;">&#25353;&#29031;&#26102;&#38388;&#35009;&#21098;<a class="anchor-link" href="#&#25353;&#29031;&#26102;&#38388;&#35009;&#21098;">&#182;</a></h2><p>测量的时间通常比所需要的时间长, 因此需要按照裁剪出指定时长的数据. 
-由于有可能存在数据点丢失, 所以指定时长的数据可能数量并不相等, 需要补齐.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">cut_by_time</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="n">start_time</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
-    <span class="c1"># 获取一段时间内的数据</span>
-    <span class="c1"># 测量时间通常长于所需要的时间, 因此需要截取</span>
-    <span class="n">start_timestamp</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">start_time</span><span class="p">,</span><span class="n">unit</span><span class="o">=</span><span class="s1">&#39;s&#39;</span><span class="p">)</span>
-    <span class="n">end_timestamp</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">start_time</span><span class="o">+</span><span class="n">duration</span><span class="p">,</span><span class="n">unit</span><span class="o">=</span><span class="s2">&quot;s&quot;</span><span class="p">)</span>
-    <span class="n">df</span><span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">df</span><span class="o">.</span><span class="n">time</span><span class="o">&gt;=</span><span class="n">start_timestamp</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">time</span><span class="o">&lt;=</span><span class="n">end_timestamp</span><span class="p">))</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
-    
-    <span class="c1">#将时间格式转换回float</span>
-    <span class="n">df</span><span class="o">.</span><span class="n">time</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">time</span><span class="p">)</span><span class="o">/</span><span class="mf">10e8</span>
-    <span class="k">return</span> <span class="n">df</span>
-
-<span class="k">def</span> <span class="nf">padding_time</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="n">duration</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span><span class="n">redundancy</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span><span class="n">padding_with</span><span class="o">=</span><span class="s2">&quot;last&quot;</span><span class="p">):</span>
-    <span class="c1"># 将数据补齐</span>
-    <span class="c1"># 通常每秒有4-5个数据. </span>
-    <span class="c1"># 默认以最后一项补齐,否则以padding_with补齐</span>
-    <span class="n">redundancy_length</span><span class="o">=</span><span class="n">duration</span><span class="o">*</span><span class="mi">5</span><span class="o">+</span><span class="n">redundancy</span>
-    <span class="n">add_length</span><span class="o">=</span><span class="n">redundancy_length</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">padding_with</span><span class="o">==</span><span class="s2">&quot;last&quot;</span><span class="p">:</span>
-        <span class="n">padding_item</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">padding_item</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span><span class="o">*</span><span class="n">padding_with</span><span class="p">,</span><span class="n">columns</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
-    <span class="n">df2</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">padding_item</span><span class="p">]</span><span class="o">*</span><span class="n">add_length</span><span class="p">)</span>
-    <span class="n">new_df</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">df2</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()[</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
-    <span class="k">return</span> <span class="n">new_df</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="&#35835;&#21462;&#25968;&#25454;&#25991;&#20214;&#30340;&#25972;&#21512;">&#35835;&#21462;&#25968;&#25454;&#25991;&#20214;&#30340;&#25972;&#21512;<a class="anchor-link" href="#&#35835;&#21462;&#25968;&#25454;&#25991;&#20214;&#30340;&#25972;&#21512;">&#182;</a></h2><p>按照文件名读取数据, 然后按照时间范围截取, 清理</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">get_data</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="n">start_time</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">duration</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span><span class="n">redundancy</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span><span class="n">padding_with</span><span class="o">=</span><span class="s2">&quot;last&quot;</span><span class="p">):</span>
-    <span class="c1"># 按照文件名读取数据</span>
-    <span class="c1"># 依次进行数据清理</span>
-    <span class="c1"># 返回Numpy array</span>
-    <span class="n">data_filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">fpath</span><span class="p">,</span><span class="n">filename</span><span class="p">)</span>
-    <span class="n">df</span><span class="o">=</span><span class="n">read_raw_data</span><span class="p">(</span><span class="n">data_filename</span><span class="p">)</span>
-    <span class="n">df</span><span class="o">=</span><span class="n">cut_by_time</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="n">start_time</span><span class="o">=</span><span class="n">start_time</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="n">duration</span><span class="p">)</span>
-    <span class="n">df</span><span class="o">=</span><span class="n">padding_time</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="n">duration</span><span class="o">=</span><span class="n">duration</span><span class="p">,</span><span class="n">redundancy</span><span class="o">=</span><span class="n">redundancy</span><span class="p">,</span><span class="n">padding_with</span><span class="o">=</span><span class="n">padding_with</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># 测试</span>
-<span class="k">if</span> <span class="vm">__name__</span><span class="o">==</span><span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-    <span class="n">fname</span><span class="o">=</span><span class="s2">&quot;WCSD0006.csv&quot;</span>
-    <span class="n">data_filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">fpath</span><span class="p">,</span><span class="n">fname</span><span class="p">)</span>
-    <span class="n">raw_data</span><span class="o">=</span><span class="n">read_raw_data</span><span class="p">(</span><span class="n">data_filename</span><span class="p">)</span>
-    <span class="n">raw_data</span><span class="o">=</span><span class="n">cut_by_time</span><span class="p">(</span><span class="n">raw_data</span><span class="p">)</span>
-    <span class="n">raw_data</span><span class="o">=</span><span class="n">padding_time</span><span class="p">(</span><span class="n">raw_data</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">raw_data</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">raw_data</span><span class="o">.</span><span class="n">tail</span><span class="p">())</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>   time  power  pupil
-0  0.00  -4.74    3.3
-1  0.56  -4.21    3.3
-2  0.71  -4.63    3.2
-3  0.88  -4.68    3.2
-4  1.06  -4.21    3.2
-    time  power  pupil
-25  4.55  -4.80    3.4
-26  4.72  -4.78    3.4
-27  4.89  -4.76    3.4
-28  4.89  -4.76    3.4
-29  4.89  -4.76    3.4
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="&#35835;&#21462;&#20998;&#31867;&#25991;&#20214;">&#35835;&#21462;&#20998;&#31867;&#25991;&#20214;<a class="anchor-link" href="#&#35835;&#21462;&#20998;&#31867;&#25991;&#20214;">&#182;</a></h1><p>分类文件是一个csv文件, 记录了每一个数据文件的分类和文件名</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">get_5500_data</span><span class="p">(</span><span class="n">fpath</span><span class="p">,</span><span class="n">class_fname</span><span class="p">,</span><span class="n">start_time</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">duration</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span><span class="n">redundancy</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span><span class="n">padding_with</span><span class="o">=</span><span class="s2">&quot;last&quot;</span><span class="p">):</span>
-    <span class="n">class_filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">fpath</span><span class="p">,</span><span class="n">class_fname</span><span class="p">)</span>
-    <span class="n">class_data</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">class_filename</span><span class="p">)</span>
-    <span class="n">X</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">get_data</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;filename&quot;</span><span class="p">],</span>
-                          <span class="n">start_time</span><span class="o">=</span><span class="n">start_time</span><span class="p">,</span>
-                          <span class="n">duration</span><span class="o">=</span><span class="n">duration</span><span class="p">,</span>
-                          <span class="n">redundancy</span><span class="o">=</span><span class="n">redundancy</span><span class="p">,</span>
-                          <span class="n">padding_with</span><span class="o">=</span><span class="n">padding_with</span><span class="p">)</span> 
-                 <span class="k">for</span> <span class="n">idx</span><span class="p">,</span><span class="n">data</span> <span class="ow">in</span> <span class="n">class_data</span><span class="o">.</span><span class="n">iterrows</span><span class="p">()])</span>
-    <span class="n">y</span><span class="o">=</span><span class="n">class_data</span><span class="p">[</span><span class="s2">&quot;class&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">X</span><span class="p">,</span><span class="n">y</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># 测试</span>
-<span class="k">if</span> <span class="vm">__name__</span><span class="o">==</span><span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-    <span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="n">get_5500_data</span><span class="p">(</span><span class="n">fpath</span><span class="p">,</span><span class="n">class_fname</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>[[ 0.   -4.74  3.3   0.56 -4.21  3.3   0.71 -4.63  3.2   0.88 -4.68  3.2
-   1.06 -4.21  3.2   1.23 -4.66  3.2   1.4  -4.72  3.2   1.56 -4.37  3.2
-   1.73 -4.73  3.2   1.9  -4.29  3.3   2.05 -4.63  3.2   2.23 -4.7   3.3
-   2.4  -4.33  3.2   2.55 -4.27  3.2   2.73 -4.28  3.3   2.9  -4.34  3.3
-   3.05 -4.72  3.3   3.22 -4.39  3.3   3.4  -4.73  3.3   3.55 -4.59  3.3
-   3.72 -4.75  3.4   3.9  -4.76  3.4   4.05 -4.79  3.5   4.22 -4.76  3.5
-   4.39 -4.81  3.5   4.55 -4.8   3.4   4.72 -4.78  3.4   4.89 -4.76  3.4
-   4.89 -4.76  3.4   4.89 -4.76  3.4 ]
- [ 0.   -4.74  3.3   0.56 -4.21  3.3   0.71 -4.63  3.2   0.88 -4.68  3.2
-   1.06 -4.21  3.2   1.23 -4.66  3.2   1.4  -4.72  3.2   1.56 -4.37  3.2
-   1.73 -4.73  3.2   1.9  -4.29  3.3   2.05 -4.63  3.2   2.23 -4.7   3.3
-   2.4  -4.33  3.2   2.55 -4.27  3.2   2.73 -4.28  3.3   2.9  -4.34  3.3
-   3.05 -4.72  3.3   3.22 -4.39  3.3   3.4  -4.73  3.3   3.55 -4.59  3.3
-   3.72 -4.75  3.4   3.9  -4.76  3.4   4.05 -4.79  3.5   4.22 -4.76  3.5
-   4.39 -4.81  3.5   4.55 -4.8   3.4   4.72 -4.78  3.4   4.89 -4.76  3.4
-   4.89 -4.76  3.4   4.89 -4.76  3.4 ]
- [ 0.   -4.74  3.3   0.56 -4.21  3.3   0.71 -4.63  3.2   0.88 -4.68  3.2
-   1.06 -4.21  3.2   1.23 -4.66  3.2   1.4  -4.72  3.2   1.56 -4.37  3.2
-   1.73 -4.73  3.2   1.9  -4.29  3.3   2.05 -4.63  3.2   2.23 -4.7   3.3
-   2.4  -4.33  3.2   2.55 -4.27  3.2   2.73 -4.28  3.3   2.9  -4.34  3.3
-   3.05 -4.72  3.3   3.22 -4.39  3.3   3.4  -4.73  3.3   3.55 -4.59  3.3
-   3.72 -4.75  3.4   3.9  -4.76  3.4   4.05 -4.79  3.5   4.22 -4.76  3.5
-   4.39 -4.81  3.5   4.55 -4.8   3.4   4.72 -4.78  3.4   4.89 -4.76  3.4
-   4.89 -4.76  3.4   4.89 -4.76  3.4 ]
- [ 0.   -4.74  3.3   0.56 -4.21  3.3   0.71 -4.63  3.2   0.88 -4.68  3.2
-   1.06 -4.21  3.2   1.23 -4.66  3.2   1.4  -4.72  3.2   1.56 -4.37  3.2
-   1.73 -4.73  3.2   1.9  -4.29  3.3   2.05 -4.63  3.2   2.23 -4.7   3.3
-   2.4  -4.33  3.2   2.55 -4.27  3.2   2.73 -4.28  3.3   2.9  -4.34  3.3
-   3.05 -4.72  3.3   3.22 -4.39  3.3   3.4  -4.73  3.3   3.55 -4.59  3.3
-   3.72 -4.75  3.4   3.9  -4.76  3.4   4.05 -4.79  3.5   4.22 -4.76  3.5
-   4.39 -4.81  3.5   4.55 -4.8   3.4   4.72 -4.78  3.4   4.89 -4.76  3.4
-   4.89 -4.76  3.4   4.89 -4.76  3.4 ]]
-[[1]
- [1]
- [0]
- [0]]
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
 </div>
     </div>
   </div>
