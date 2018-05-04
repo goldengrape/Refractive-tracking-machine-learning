@@ -11971,16 +11971,17 @@ div#notebook {
     <span class="k">if</span> <span class="n">this_class</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">power_mean</span><span class="o">=-</span><span class="mi">4</span>
         <span class="n">power_std</span><span class="o">=</span><span class="mf">0.2</span>
-        <span class="n">pupil_mean</span><span class="o">=</span><span class="mi">6</span>
-        <span class="n">pupil_std</span><span class="o">=</span><span class="mf">0.1</span>
+        <span class="n">pupil_mean</span><span class="o">=</span><span class="mi">4</span>
+        <span class="n">pupil_std</span><span class="o">=</span><span class="mf">0.2</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">power_mean</span><span class="o">=-</span><span class="mf">4.5</span>
         <span class="n">power_std</span><span class="o">=</span><span class="mf">0.3</span>
         <span class="n">pupil_mean</span><span class="o">=</span><span class="mf">3.5</span>
-        <span class="n">pupil_std</span><span class="o">=</span><span class="mf">0.1</span>
+        <span class="n">pupil_std</span><span class="o">=</span><span class="mf">0.3</span>
     <span class="n">time_data</span><span class="o">=</span><span class="n">build_time_data</span><span class="p">(</span><span class="n">n_data</span><span class="p">)</span>
-    <span class="n">power_data</span><span class="o">=</span><span class="n">build_power_data</span><span class="p">(</span><span class="n">n_data</span><span class="p">,</span> <span class="n">mean</span><span class="o">=-</span><span class="mf">4.5</span><span class="p">,</span> <span class="n">std</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
-    <span class="n">pupil_data</span><span class="o">=</span><span class="n">build_pupil_data</span><span class="p">(</span><span class="n">n_data</span><span class="p">,</span><span class="n">mean</span><span class="o">=</span><span class="mf">3.5</span><span class="p">,</span> <span class="n">std</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+    <span class="n">power_data</span><span class="o">=</span><span class="n">build_power_data</span><span class="p">(</span><span class="n">n_data</span><span class="p">,</span> <span class="n">mean</span><span class="o">=</span><span class="n">power_mean</span><span class="p">,</span> <span class="n">std</span><span class="o">=</span><span class="n">power_std</span><span class="p">)</span>
+    <span class="n">pupil_data</span><span class="o">=</span><span class="n">build_pupil_data</span><span class="p">(</span><span class="n">n_data</span><span class="p">,</span><span class="n">mean</span><span class="o">=</span><span class="n">pupil_mean</span><span class="p">,</span> <span class="n">std</span><span class="o">=</span><span class="n">pupil_std</span><span class="p">)</span>
+    
     <span class="n">df</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
     <span class="n">df</span><span class="p">[</span><span class="s2">&quot;WAM5500&quot;</span><span class="p">]</span><span class="o">=</span><span class="n">time_data</span>
     <span class="n">df</span><span class="p">[</span><span class="s2">&quot;DATA-000&quot;</span><span class="p">]</span><span class="o">=</span><span class="s2">&quot;L&quot;</span>

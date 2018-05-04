@@ -95,16 +95,17 @@ def build_data_df(this_class):
     if this_class == 0:
         power_mean=-4
         power_std=0.2
-        pupil_mean=6
-        pupil_std=0.1
+        pupil_mean=4
+        pupil_std=0.2
     else:
         power_mean=-4.5
         power_std=0.3
         pupil_mean=3.5
-        pupil_std=0.1
+        pupil_std=0.3
     time_data=build_time_data(n_data)
-    power_data=build_power_data(n_data, mean=-4.5, std=0.1)
-    pupil_data=build_pupil_data(n_data,mean=3.5, std=0.1)
+    power_data=build_power_data(n_data, mean=power_mean, std=power_std)
+    pupil_data=build_pupil_data(n_data,mean=pupil_mean, std=pupil_std)
+    
     df=pd.DataFrame()
     df["WAM5500"]=time_data
     df["DATA-000"]="L"

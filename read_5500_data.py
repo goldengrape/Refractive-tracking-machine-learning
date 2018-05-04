@@ -24,17 +24,17 @@ import os
 import numpy as np
 
 
-# In[2]:
+# In[9]:
 
 
 if __name__=="__main__":
-    fpath="data5500"
-    class_fname="class.csv"
+    fpath="data_sim"
+    class_fname="class_sim.csv"
 
 
 # ## 读取单个文件
 
-# In[3]:
+# In[14]:
 
 
 def read_raw_data(filename):
@@ -50,9 +50,15 @@ def read_raw_data(filename):
     raw_data["time"]=pd.to_datetime(raw_data["time"],unit='s')
     
     # 其他数据以float方式记录, 空缺数据记录为NaN
-    raw_data["power"]=pd.to_numeric(raw_data["power"].str.strip())
-    raw_data["pupil"]=pd.to_numeric(raw_data["pupil"].str.strip())
-    
+    try:
+        raw_data["power"]=pd.to_numeric(raw_data["power"].str.strip())
+    except:
+        raw_data["power"]=pd.to_numeric(raw_data["power"])
+    try:
+        raw_data["pupil"]=pd.to_numeric(raw_data["pupil"].str.strip())
+    except:
+        raw_data["pupil"]=pd.to_numeric(raw_data["pupil"])
+
     # 丢弃空缺数据所在行
     raw_data.dropna(inplace=True)
     return raw_data
@@ -62,7 +68,7 @@ def read_raw_data(filename):
 # 测量的时间通常比所需要的时间长, 因此需要按照裁剪出指定时长的数据. 
 # 由于有可能存在数据点丢失, 所以指定时长的数据可能数量并不相等, 需要补齐. 
 
-# In[4]:
+# In[15]:
 
 
 def cut_by_time(df,start_time=0, duration=5):
@@ -95,10 +101,10 @@ def padding_time(df,duration=5,redundancy=5,padding_with="last"):
 # ## 读取数据文件的整合
 # 按照文件名读取数据, 然后按照时间范围截取, 清理
 
-# In[5]:
+# In[16]:
 
 
-def get_data(filename,start_time=0,duration=5,redundancy=5,padding_with="last"):
+def get_data(fpath, filename,start_time=0,duration=5,redundancy=5,padding_with="last"):
     # 按照文件名读取数据
     # 依次进行数据清理
     # 返回Numpy array
@@ -109,7 +115,7 @@ def get_data(filename,start_time=0,duration=5,redundancy=5,padding_with="last"):
     return df.values.reshape(1,-1)
 
 
-# In[6]:
+# In[17]:
 
 
 # 测试
@@ -127,19 +133,19 @@ if __name__=="__main__":
 # 
 # 分类文件是一个csv文件, 记录了每一个数据文件的分类和文件名
 
-# In[7]:
+# In[18]:
 
 
 def get_5500_data(fpath,class_fname,start_time=0,duration=5,redundancy=5,padding_with="last"):
     class_filename=os.path.join(fpath,class_fname)
     class_data=pd.read_csv(class_filename)
-    X=np.vstack([get_data(data["filename"],
+    X=np.vstack([get_data(fpath, data["filename"],
                           start_time=start_time,
                           duration=duration,
                           redundancy=redundancy,
                           padding_with=padding_with) 
                  for idx,data in class_data.iterrows()])
-    y=class_data["class"].values.reshape(-1,1)
+    y=class_data["class"].values#.reshape(-1,1)
     return X,y
 
 
