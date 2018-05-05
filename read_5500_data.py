@@ -112,7 +112,9 @@ def get_data(fpath, filename,start_time=0,duration=5,redundancy=5,padding_with="
     df=read_raw_data(data_filename)
     df=cut_by_time(df,start_time=start_time, duration=duration)
     df=padding_time(df,duration=duration,redundancy=redundancy,padding_with=padding_with)
-    return df.values.reshape(1,-1)
+    ans=df.values.reshape(1,-1)
+#     ans=df.values
+    return ans
 
 
 # In[17]:

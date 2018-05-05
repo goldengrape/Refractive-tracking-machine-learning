@@ -11957,7 +11957,9 @@ div#notebook {
     <span class="n">df</span><span class="o">=</span><span class="n">read_raw_data</span><span class="p">(</span><span class="n">data_filename</span><span class="p">)</span>
     <span class="n">df</span><span class="o">=</span><span class="n">cut_by_time</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="n">start_time</span><span class="o">=</span><span class="n">start_time</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="n">duration</span><span class="p">)</span>
     <span class="n">df</span><span class="o">=</span><span class="n">padding_time</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="n">duration</span><span class="o">=</span><span class="n">duration</span><span class="p">,</span><span class="n">redundancy</span><span class="o">=</span><span class="n">redundancy</span><span class="p">,</span><span class="n">padding_with</span><span class="o">=</span><span class="n">padding_with</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">ans</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="c1">#     ans=df.values</span>
+    <span class="k">return</span> <span class="n">ans</span>
 </pre></div>
 
 </div>
